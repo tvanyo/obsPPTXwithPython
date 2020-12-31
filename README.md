@@ -1,4 +1,4 @@
-## obsPPTXwithPython
+# obsPPTXwithPython
 
 Inspired by Scott Hanselman's [PowerPointToOBSSceneSwitcher][1], I was looking for a way to do this on macOS. Many hours consumed trying to re-adjust to AppleScript while dealing with MSFT's PowerPoint dictionary, but got there.
 
@@ -11,7 +11,8 @@ I'm using pygame for keyboard capture.
 * Looked at curses, which might be better  
 * pygame was quick and easy, so it get's the nood for v1  
 
-Other references included:
+
+## Other References
 * [PowerPoint Applescript Reference][2]
 * [Running AppleScript from python][3]
 * [Getting the notes via AppleScript][4]

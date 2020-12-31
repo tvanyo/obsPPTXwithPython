@@ -1,15 +1,15 @@
 # obsPPTXwithPython
 
-Inspired by Scott Hanselman's [PowerPointToOBSSceneSwitcher][1], I was looking for a way to do this on macOS. Many hours consumed trying to re-adjust to AppleScript while dealing with MSFT's PowerPoint dictionary, but got there.
+Inspired by Scott Hanselman's [PowerPointToOBSSceneSwitcher][1], I was looking for a way to do this on macOS. This uses Applescript to both control the slides (easy) and extract the notes (harder than it needed be). The Applescript is run from the python, so no need to have multiple things running at a time. I spent a lot more time trying to get Applescript to work than getting anything else running.
 
-This is a MVP, but it is working. You can advance or retreat in a pptx presentation and OBS will change scenes as expected. Tested against PowerPoint 16.44.
+This is a MVP, so don't expect perfection. You can advance or retreat in a pptx presentation and OBS will change scenes as expected. Tested against PowerPoint 16.44, but more testing would be good.
 
-You need to add "OBS:<SCENENAME>" to the notes section, just like in Scott's implmentation. You should have the presentation in Slide Show view for this to work. 
+You need to add "OBS:<SCENENAME>" to the notes section, just like in Scott's implmentation. You should have the presentation in Slide Show view for this to work out of the gate. Just like Scott's, you'll have a terminal open to run. 
 
 I'm using pygame for keyboard capture.   
-* Looked at the keyboard package, but needs root and I wanted to avoid that like the plague.
+* pygame was quick and easy, so it get's the nod for v1  
+* Looked at the keyboard package, but needs root and I wanted to avoid that
 * Looked at curses, which might be better  
-* pygame was quick and easy, so it get's the nood for v1  
 
 
 ## Other References

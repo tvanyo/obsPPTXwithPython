@@ -2,6 +2,8 @@ from subprocess import Popen, PIPE
 import re
 import obswebsocket
 import obswebsocket.requests
+import pygame, sys
+import pygame.locals
 
 ## References
 # PowerPoint Applescript Reference
@@ -30,10 +32,18 @@ get_Notes = """
     end run
 """
 
-advance_slide = """
+next_slide = """
     on run {}
         tell application "Microsoft PowerPoint"
             go to next slide of slide show view of slide show window 1
+        end tell
+    end run
+"""
+
+previous_slide = """
+    on run {}
+        tell application "Microsoft PowerPoint"
+            go to previous slide of slide show view of slide show window 1
         end tell
     end run
 """
@@ -45,19 +55,34 @@ def run_applescript(script):
     return (p.returncode, stdout.decode("utf-8"), stderr.decode("utf-8"))
 
 
-asReturn, asOut, asErr = run_applescript(get_Notes)
-# print(f"Return code = {asReturn}\nstdout = {asOut.strip()}\nstderr ={asErr.strip()}")
-try:
-    scene = obsSearch.match(asOut).group(1)
-except (AttributeError):
-    scene = sceneDefault
-print(f"Scene = {scene}")
+def get_pptxScene():
+    asReturn, asOut, asErr = run_applescript(get_Notes)
+    # print(f"Return code = {asReturn}\nstdout = {asOut.strip()}\nstderr ={asErr.strip()}")
+    try:
+        scene = obsSearch.match(asOut).group(1)
+    except (AttributeError):
+        scene = sceneDefault
+    return scene
 
 
+pygame.init()
 client = obswebsocket.obsws("localhost", 4444, obsWSPasswd)
 client.connect()
-nextScene = client.call(obswebsocket.requests.SetCurrentScene(scene))
-print(nextScene)
-client.disconnect()
-asReturn, asOut, asErr = run_applescript(advance_slide)
-# print(f"Return code = {asReturn}\nstdout = {asOut}\nstderr ={asErr}")
+scene = get_pptxScene()  # Set first scene
+response = client.call(obswebsocket.requests.SetCurrentScene(scene))
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                asReturn, asOut, asErr = run_applescript(next_slide)
+                scene = get_pptxScene()
+                response = client.call(obswebsocket.requests.SetCurrentScene(scene))
+            if event.key == pygame.K_LEFT:
+                asReturn, asOut, asErr = run_applescript(previous_slide)
+                scene = get_pptxScene()
+                response = client.call(obswebsocket.requests.SetCurrentScene(scene))
+            if event.key == pygame.K_q:
+                client.disconnect()
+                pygame.quit()
+                sys.exit()

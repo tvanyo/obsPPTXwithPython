@@ -1,5 +1,7 @@
 from subprocess import Popen, PIPE
 import re
+import obswebsocket
+import obswebsocket.requests
 
 ## References
 # PowerPoint Applescript Reference
@@ -9,9 +11,14 @@ import re
 # Getting the notes via AppleScript
 #   I want to send this guy money, I'd never of figured this out
 #   https://stackoverflow.com/questions/12817639/how-can-i-access-the-text-of-notes-in-a-ppt-file-via-applescript
+# Scott Hanselman's PowerPointToOBSSceneSwitcher
+#   https://github.com/shanselman/PowerPointToOBSSceneSwitcher
+# OBS Websocket access with python
+#   https://github.com/Elektordi/obs-websocket-py
 
 obsSearch = re.compile("OBS:(.*)")
 sceneDefault = "DefaultPPTX"
+obsWSPasswd = "2020Sucks"
 
 get_Notes = """
     on run {}
@@ -45,5 +52,12 @@ try:
 except (AttributeError):
     scene = sceneDefault
 print(f"Scene = {scene}")
+
+
+client = obswebsocket.obsws("localhost", 4444, obsWSPasswd)
+client.connect()
+nextScene = client.call(obswebsocket.requests.SetCurrentScene(scene))
+print(nextScene)
+client.disconnect()
 asReturn, asOut, asErr = run_applescript(advance_slide)
 # print(f"Return code = {asReturn}\nstdout = {asOut}\nstderr ={asErr}")

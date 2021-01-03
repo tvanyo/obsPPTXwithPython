@@ -11,6 +11,12 @@ I'm using pygame for keyboard capture.
 * Looked at the keyboard package, but needs root and I wanted to avoid that
 * Looked at curses, which might be better  
 
+## One Trick Pony Scripts
+
+I have split obsPPTX.py into three scripts, obsPPTXStart, obsPPTXAdvance, and obsPPTXRetreat, which only do one thing each. This should allow the script to be run from a hotkey launcher such as Keysmith, Keyboard Maestro, Alfred, etc. The benefit of this is that pygame is no longer needed. The websocket connection is opened and closed with every run, but this seems fairly quick.
+
+## Requirements
+These scripts were developed with python 3.7.3. The only other requirement to install is obs-websocket-py, via `pip install obs-websocket-py`
 
 ## Other References
 * [PowerPoint Applescript Reference][2]

@@ -1,9 +1,8 @@
+#!/usr/local/bin/python
 from subprocess import Popen, PIPE
 import re
 import obswebsocket
 import obswebsocket.requests
-import pygame, sys
-import pygame.locals
 
 ## References
 # PowerPoint Applescript Reference

@@ -1,3 +1,4 @@
+#!/usr/local/bin/python
 from subprocess import Popen, PIPE
 import re
 import obswebsocket
